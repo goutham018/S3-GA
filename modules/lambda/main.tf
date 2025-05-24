@@ -29,7 +29,7 @@ resource "aws_lambda_permission" "allow_s3_invocation" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.ci_failure_log_processor.function_name
   principal     = "s3.amazonaws.com"
-  source_arn    = var.bucket_name
+  source_arn    = "arn:aws:s3:::${var.bucket_name}"
 }
 
 output "lambda_role_arn" {
