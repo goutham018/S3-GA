@@ -10,5 +10,5 @@ module "ci_log_bucket" {
 module "ci_log_lambda" {
   source          = "./modules/lambda"
   bucket_name     = module.ci_log_bucket.bucket_name
-  lambda_role_arn = module.ci_log_lambda.lambda_role_arn
+  # lambda_role_arn = module.ci_log_lambda.lambda_role_arn
 }
