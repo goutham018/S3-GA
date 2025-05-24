@@ -4,7 +4,7 @@ provider "aws" {
 
 module "ci_log_bucket" {
   source = "./modules/s3"
-  bucket_name = "ci-failure-logs-bucket-273550"
+  bucket_name = "ci-failure-logs-bucket-27355052"
 }
 
 module "ci_log_lambda" {
