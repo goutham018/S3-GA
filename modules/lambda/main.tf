@@ -21,7 +21,7 @@ resource "aws_lambda_function" "ci_failure_log_processor" {
   runtime       = "python3.9"
   role          = aws_iam_role.lambda_exec.arn
   handler       = "handler.main"
-  filename      = "${path.module}/lambda.zip"
+  filename      = "./modules/lambda/lambda_function/lambda.zip"
 }
 
 resource "aws_lambda_permission" "allow_s3_invocation" {
