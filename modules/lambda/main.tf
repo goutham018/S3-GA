@@ -22,6 +22,11 @@ resource "aws_lambda_function" "ci_failure_log_processor" {
   role          = aws_iam_role.lambda_exec.arn
   handler       = "handler.main"
   filename      = "./modules/lambda/lambda_function/lambda.zip"
+
+environment {
+    variables = var.environment_variables
+  }
+
 }
 
 resource "aws_lambda_permission" "allow_s3_invocation" {
