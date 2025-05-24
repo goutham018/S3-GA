@@ -39,3 +39,10 @@ output "lambda_role_arn" {
 output "lambda_function_arn" {
   value = aws_lambda_function.ci_failure_log_processor.arn
 }
+
+variable "environment_variables" {
+  type        = map(string)
+  description = "Environment variables for the Lambda function"
+  default     = {}
+}
+
