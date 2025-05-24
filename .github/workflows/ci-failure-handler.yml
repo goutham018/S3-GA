@@ -29,19 +29,22 @@ jobs:
           role-to-assume: arn:aws:iam::273354635930:role/github-oidc
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Download logs
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const { execSync } = require('child_process');
-            const run_id = process.env.GITHUB_RUN_ID;
-            const token = process.env.GITHUB_TOKEN;
-            const logsUrl = `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${run_id}/logs`;
-            execSync(`curl -H "Authorization: token ${token}" -L ${logsUrl} -o logs.zip`);
+      - name: Download logs from CI Workflow run
+        env:
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -L \
+            -H "Authorization: token $GH_TOKEN" \
+            https://api.github.com/repos/$REPO/actions/runs/$RUN_ID/logs \
+            -o logs.zip
+
+      - name: Verify logs.zip is valid
+        run: file logs.zip
 
       - name: Unzip logs
         run: unzip logs.zip -d logs
 
       - name: Upload logs to S3
-        run: aws s3 sync logs s3://${{ secrets.AWS_S3_BUCKET }} --acl private --follow-symlinks
+        run: aws s3 sync logs s3://${{ secrets.AWS_S3_BUCKET }}/ci-failure-logs/${{ github.event.workflow_run.id }} --acl private --follow-symlinks
