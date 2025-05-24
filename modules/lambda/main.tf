@@ -35,3 +35,7 @@ resource "aws_lambda_permission" "allow_s3_invocation" {
 output "lambda_role_arn" {
   value = aws_iam_role.lambda_exec.arn
 }
+
+output "lambda_function_arn" {
+  value = aws_lambda_function.ci_failure_log_processor.arn
+}
