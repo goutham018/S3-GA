@@ -39,8 +39,8 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
 
-      - name: Terraform Plan
-        run: aa
+      # - name: Terraform Plan
+      #   run: aa
 
       - name: Terraform Apply or Destroy
         run: |
