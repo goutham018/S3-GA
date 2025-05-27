@@ -33,6 +33,10 @@ jobs:
           echo "Workflow: ${{ github.event.client_payload.workflow }}"
           echo "Branch: ${{ github.event.client_payload.branch }}"
 
+      - name: Print triggering user
+        run: |
+         echo "Triggered by GitHub user: ${{ github.event.client_payload.actor }}"
+
       - name: Download logs from failed workflow run
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,4 +57,4 @@ jobs:
 
       - name: Upload logs to S3
         run: |
-          aws s3 sync logs s3://${{ secrets.AWS_S3_BUCKET }}/ci-failure-logs/${{ github.event.client_payload.repo }}/${{ github.event.client_payload.run_id }} --acl private --follow-symlinks
+          aws s3 sync logs s3://${{ secrets.AWS_S3_BUCKET }}/ci-failure-logs/${{ github.event.client_payload.repo }}/${{ github.event.client_payload.actor }}/${{ github.event.client_payload.run_id }} --acl private --follow-symlinks
