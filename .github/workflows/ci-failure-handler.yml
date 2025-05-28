@@ -9,6 +9,7 @@ on:
 env:
   AWS_REGION: us-east-1
   AWS_ACCOUNT_ID: 273354635930
+  AWS_S3_BUCKET: <provide-s3-bucket>
 
 jobs:
   handle-failure:
@@ -26,7 +27,7 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::273354635930:role/github-oidc
+          role-to-assume: ${{ secrets.OIDC }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Download logs from CI Workflow run
@@ -47,4 +48,4 @@ jobs:
         run: unzip logs.zip -d logs
 
       - name: Upload logs to S3
-        run: aws s3 sync logs s3://${{ secrets.AWS_S3_BUCKET }}/ci-failure-logs/${{ github.event.workflow_run.id }} --acl private --follow-symlinks
+        run: aws s3 sync logs s3://${{ env.AWS_S3_BUCKET }}/ci-failure-logs/${{ github.event.workflow_run.id }} --acl private --follow-symlinks
